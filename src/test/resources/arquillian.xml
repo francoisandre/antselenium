@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian-1.0.xsd">
+    <engine>
+        <property name="deploymentExportPath">target/tmp</property>
+    </engine>
+    <container qualifier="jetty" default="true">
+        <configuration>
+            <property name="bindHttpPort">9394</property>
+        </configuration>
+    </container>
+    <!-- <extension qualifier="webdriver">
+        <property name="browser">htmlUnit</property>
+    </extension> -->
+    <extension qualifier="webdriver">
+        <property name="browser">chrome</property>
+        <property name="chromeDriverBinary">C:/Program Files/chromedriver_win32/chromedriver.exe</property>
+    </extension>
+    
+     <extension qualifier="configuration">
+    	<property name="contextRoot">http://gp5-sir-web01.sirhen.prj.in.phm.education.gouv.fr</property>
+    </extension>
+    
+    <!-- <extension qualifier="webdriver">
+        <property name="browser">phantomjs</property>
+    </extension>  -->
+</arquillian>

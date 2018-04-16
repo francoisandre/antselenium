@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>fr.gouv.education.sirhen.programme</groupId>
+		<artifactId>programme-sirhen-j2ee-ma-mapi</artifactId>
+		<version>6.V3.0.4</version>
+	</parent>
+  <groupId>info.francoisandre</groupId>
+  <artifactId>antselenium</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+    <jetty>9.4.8.v20171121</jetty>
+</properties>
+
+  
+  
+  <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.1.11.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-drone-bom</artifactId>
+                <version>2.0.0.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.selenium</groupId>
+                <artifactId>selenium-bom</artifactId>
+                <version>2.53.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+  <dependencies>
+	<dependency>
+		<groupId>fr.gouv.education.sirhen.ct</groupId>
+		<artifactId>ct-test-tu</artifactId>
+		<version>${ct-test-version}</version>
+		<scope>test</scope>
+		<exclusions>
+			<exclusion>
+				<groupId>org.jboss.arquillian.container</groupId>
+				<artifactId>arquillian-jetty-embedded-7</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-webapp</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-plus</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-jsp</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	
+	
+	
+	<dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.graphene</groupId>
+            <artifactId>graphene-webdriver</artifactId>
+            <version>2.1.0.CR2</version>
+            <type>pom</type>
+            <scope>test</scope>
+            <exclusions>
+                <!-- supprime une trace due aux soucis entre les version d'ASM amenées par Jetty -->
+                <exclusion>
+                    <groupId>asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+ 
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-deploy -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-deploy</artifactId>
+            <version>${jetty}</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>${jetty}</version>
+            <scope>test</scope>
+        </dependency>
+ 
+ 
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-annotations -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+            <version>${jetty}</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-io -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-io</artifactId>
+            <version>${jetty}</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-jetty-embedded-9</artifactId>
+            <version>1.0.0.CR3</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-phantom-driver</artifactId>
+            <version>1.2.1.1</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <!-- ces deux dépendances ne sont peut-être pas nécessaires... -->
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-configuration2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.1.1</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-management -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-management</artifactId>
+            <version>${cxf-version}</version>
+            <scope>test</scope>
+        </dependency>
+	
+  </dependencies>
+  
+</project>
