@@ -13,7 +13,7 @@
     </extension> -->
     <extension qualifier="webdriver">
         <property name="browser">chrome</property>
-        <property name="chromeDriverBinary">C:/Program Files/chromedriver_win32/chromedriver.exe</property>
+        <property name="chromeDriverBinary">C:/Users/Public/chromedriver_win32/chromedriver.exe</property>
     </extension>
     
      <extension qualifier="configuration">
