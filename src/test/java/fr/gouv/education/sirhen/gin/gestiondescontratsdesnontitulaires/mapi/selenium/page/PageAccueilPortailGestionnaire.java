@@ -12,14 +12,20 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 
 	@Page
 	PageSelectionUnite pageSelectionUnite;
+	
+	@Page
+	PageIdentificationAgentARecruter pageIdentificationAgentARecruter;
 
-	@FindBy(css = "a#A1")
+	@FindBy(id = "A1")
 	private WebElement lienMenuGestionIndividualisee;
 
-	@FindBy(css = "a#A2")
+	@FindBy(id = "A3")
+	private WebElement lienRecrutementTitulaireNonTitulaire;
+	
+	@FindBy(id = "A2")
 	private WebElement lienMenuGestionCarriere;
 
-	@FindBy(css = "a#A7")
+	@FindBy(id = "A7")
 	private WebElement lienCalibrageMoyens;
 
 	@FindBy(css = "#smenu1 .menunv2 li:nth-child(1) a")
@@ -28,9 +34,13 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	@FindBy(css = "a[href$='mapi-gin-gestion-des-contrats-prive']")
 	private WebElement lienGererContratsAgentPrive;
 
+	@FindBy(css = "a[href$='mapi-gin-gestion-entree-corps-imat']")
+	private WebElement lienRecrutementAgentTitulaire;
+	
+	
 	@FindBy(css = "a[href$='mapi-cdm-mngh-gsm']")
 	private WebElement lienImplementerSupportsAffectation;
-
+	
 	private void deplieMenuGestionIndividualisee() {
 		lienMenuGestionIndividualisee.click();
 		attente(1);
@@ -39,8 +49,13 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	private void deplieMenuCalibrageMoyens() {
 		lienCalibrageMoyens.click();
 		attente(1);
-
 	}
+	
+	private void deplieMenuRecrutementTitulaireNonTitulaire() {
+		lienRecrutementTitulaireNonTitulaire.click();
+		attente(1);
+	}
+	
 
 	public PageRechercheAgent consulterDossierAgent() {
 		deplieMenuGestionIndividualisee();
@@ -68,5 +83,12 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 		} catch (InterruptedException e) {
 
 		}
+	}
+
+	public PageIdentificationAgentARecruter recruterAgentTitulaire() {
+		deplieMenuRecrutementTitulaireNonTitulaire();
+		Graphene.guardHttp(lienRecrutementAgentTitulaire).click();
+		return pageIdentificationAgentARecruter;
+		
 	}
 }
