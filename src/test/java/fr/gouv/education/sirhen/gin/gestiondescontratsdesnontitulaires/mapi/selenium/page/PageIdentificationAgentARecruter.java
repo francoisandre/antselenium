@@ -2,12 +2,14 @@ package fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.sel
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.arquillian.graphene.Graphene;
 import org.jboss.arquillian.graphene.page.Page;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.GraphicalTestUtil;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.SeleniumUtils;
 
 public class PageIdentificationAgentARecruter extends AbstractPage {
@@ -95,8 +97,11 @@ public class PageIdentificationAgentARecruter extends AbstractPage {
 		Graphene.guardHttp(boutonCreationDossier).click();
 		System.out.println("Visible: "+SeleniumUtils.isVisible(boutonConfirmerCreationDossier));
 		System.out.println(boutonConfirmerCreationDossier.getText());
-		Graphene.guardAjax(boutonConfirmerCreationDossier).click();
-		System.out.println("icic");
+		boutonConfirmerCreationDossier.click();
+		
+		Graphene.waitModel().withTimeout(10, TimeUnit.SECONDS);
+		//TODO: A remplacer par une attente astucieuse...
+		GraphicalTestUtil.attente(5);
 		return pageSelectionCorpsGrade;
 	}
 	

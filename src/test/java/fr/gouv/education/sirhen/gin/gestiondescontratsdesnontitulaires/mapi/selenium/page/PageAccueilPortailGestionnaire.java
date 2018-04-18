@@ -5,6 +5,8 @@ import org.jboss.arquillian.graphene.page.Page;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.GraphicalTestUtil;
+
 public class PageAccueilPortailGestionnaire extends AbstractPage {
 
 	@Page
@@ -15,7 +17,10 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	
 	@Page
 	PageIdentificationAgentARecruter pageIdentificationAgentARecruter;
-
+	
+	@Page
+	private PageRechercherContrats pageRechercherContrats;
+	
 	@FindBy(id = "A1")
 	private WebElement lienMenuGestionIndividualisee;
 
@@ -37,53 +42,62 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	@FindBy(css = "a[href$='mapi-gin-gestion-entree-corps-imat']")
 	private WebElement lienRecrutementAgentTitulaire;
 	
+	@FindBy(css = "a[title='Rechercher un agent']")
+	private WebElement lienRechercherAgent;
+	
 	
 	@FindBy(css = "a[href$='mapi-cdm-mngh-gsm']")
 	private WebElement lienImplementerSupportsAffectation;
+
 	
 	private void deplieMenuGestionIndividualisee() {
 		lienMenuGestionIndividualisee.click();
-		attente(1);
+		GraphicalTestUtil.attente(1);
 	}
 
 	private void deplieMenuCalibrageMoyens() {
 		lienCalibrageMoyens.click();
-		attente(1);
+		GraphicalTestUtil.attente(1);
 	}
+	
+	private void deplieMenuGestionCarriere() {
+		lienMenuGestionCarriere.click();
+		GraphicalTestUtil.attente(1);
+	}
+	
 	
 	private void deplieMenuRecrutementTitulaireNonTitulaire() {
 		lienRecrutementTitulaireNonTitulaire.click();
-		attente(1);
+		GraphicalTestUtil.attente(1);
+	}
+
+	public PageRechercheAgent rechercherAgent() {
+		Graphene.guardHttp(lienRechercherAgent).click();
+		return pageRechercheAgent;
 	}
 	
 
-	public PageRechercheAgent consulterDossierAgent() {
-		deplieMenuGestionIndividualisee();
-		Graphene.guardHttp(lienConsulterDossierAgent).click();
-		return pageRechercheAgent;
-	}
-
-	public PageRechercheAgent gererContratsAgentPrive() {
-		deplieMenuGestionIndividualisee();
-		Graphene.guardHttp(lienConsulterDossierAgent).click();
-		return pageRechercheAgent;
+//	public PageRechercheAgent consulterDossierAgent() {
+//		deplieMenuGestionIndividualisee();
+//		Graphene.guardHttp(lienConsulterDossierAgent).click();
+//		return pageRechercheAgent;
+//	}
+//
+	public PageRechercherContrats gererContratsAgentPrive() {
+		deplieMenuGestionCarriere();
+		Graphene.guardHttp(lienGererContratsAgentPrive).click();
+		return pageRechercherContrats;
 	}
 
 	public PageSelectionUnite implementerSupportsAffectation() {
 		deplieMenuCalibrageMoyens();
 		Graphene.guardHttp(lienImplementerSupportsAffectation).click();
-		attente(2);
+		GraphicalTestUtil.attente(2);
 		return pageSelectionUnite;
 
 	}
 
-	public void attente(final int dureeEnSeconde) {
-		try {
-			Thread.sleep(1000 * dureeEnSeconde);
-		} catch (InterruptedException e) {
-
-		}
-	}
+	
 
 	public PageIdentificationAgentARecruter recruterAgentTitulaire() {
 		deplieMenuRecrutementTitulaireNonTitulaire();
