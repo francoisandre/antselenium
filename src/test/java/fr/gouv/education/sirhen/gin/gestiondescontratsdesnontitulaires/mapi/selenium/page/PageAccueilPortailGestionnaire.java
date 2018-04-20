@@ -19,6 +19,9 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	PageIdentificationAgentARecruter pageIdentificationAgentARecruter;
 	
 	@Page
+	PageListeEchelons pageListeEchelons;
+	
+	@Page
 	private PageRechercherContrats pageRechercherContrats;
 	
 	@FindBy(id = "A1")
@@ -45,10 +48,11 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 	@FindBy(css = "a[title='Rechercher un agent']")
 	private WebElement lienRechercherAgent;
 	
-	
 	@FindBy(css = "a[href$='mapi-cdm-mngh-gsm']")
 	private WebElement lienImplementerSupportsAffectation;
-
+	
+	@FindBy(css = "a[href$='mapi-gin-gestion-echelon-ech']")
+	private WebElement lienListeEchelons;
 	
 	private void deplieMenuGestionIndividualisee() {
 		lienMenuGestionIndividualisee.click();
@@ -97,12 +101,17 @@ public class PageAccueilPortailGestionnaire extends AbstractPage {
 
 	}
 
-	
-
 	public PageIdentificationAgentARecruter recruterAgentTitulaire() {
 		deplieMenuRecrutementTitulaireNonTitulaire();
 		Graphene.guardHttp(lienRecrutementAgentTitulaire).click();
 		return pageIdentificationAgentARecruter;
+		
+	}
+	
+	public PageListeEchelons listeEchelons() {
+		deplieMenuGestionCarriere();
+		Graphene.guardHttp(lienListeEchelons).click();
+		return pageListeEchelons;
 		
 	}
 }

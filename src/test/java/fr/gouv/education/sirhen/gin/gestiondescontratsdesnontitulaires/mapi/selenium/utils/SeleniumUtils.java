@@ -1,9 +1,12 @@
 package fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils;
 
+import java.util.List;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.Select;
 
 public class SeleniumUtils {
 
@@ -27,5 +30,11 @@ public class SeleniumUtils {
 			((RemoteWebDriver) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", 
 					element, attName, attValue);
 		}
+	}
+	
+	public static void selectOption(Select select, int optionIndex) {
+		List<WebElement> options = select.getOptions();
+		WebElement option = options.get(optionIndex);
+		select.selectByValue(option.getAttribute("value"));
 	}
 }

@@ -27,6 +27,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -40,11 +41,14 @@ import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.sele
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageAccueilPortailGestionnaire;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageAjouterContrat;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageAuthentification;
+import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageCreationSupport;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageGenerationArreteRecrutementAgentTitulaire;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageIdentificationAgentARecruter;
+import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageListeEchelons;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageRechercheAgent;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageRechercherContrats;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageSelectionCorpsGrade;
+import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.page.PageSelectionUnite;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.Graphical;
 import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.SpecializedScreenRecorder;
 
@@ -52,6 +56,7 @@ import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.sele
 @Category(Graphical.class)
 public class ScenarioInitiationContratAgentNonTitulaire {
 
+	private static final String DATE_ENTREE_FP = "01/09/2017";
 	private static final String DATE_NAISSANCE = "01/01/1970";
 	@Drone
 	WebDriver driver;
@@ -59,6 +64,7 @@ public class ScenarioInitiationContratAgentNonTitulaire {
 	
 	private static ScreenRecorder screenRecorder;
 
+	@Ignore
 	@Test
 	public void testInitiationContratAgentNonTitulaire(@InitialPage final PageAuthentification pageAuthentification) {
 		
@@ -74,12 +80,84 @@ public class ScenarioInitiationContratAgentNonTitulaire {
 		
 		if (!existeUniqueAgent(agent, pageAccueilPortailGestionnaire)) {
 			creerAgent(agent, pageAccueilPortailGestionnaire);
+			ajouterEchelonAgent(agent, pageAccueilPortailGestionnaire);
+			creerAffectationAdministrative(agent, pageAccueilPortailGestionnaire);
 		}
 		selectionnerAgent(agent, pageAccueilPortailGestionnaire);
 		
 		gererDossierAgent(agent, pageAccueilPortailGestionnaire);
 		
 		System.out.println("Pause....");
+	}
+	
+	
+	private void creerAffectationAdministrative(Agent agent,
+			PageAccueilPortailGestionnaire pageAccueilPortailGestionnaire) {
+		PageSelectionUnite pageSelectionUnite = pageAccueilPortailGestionnaire.implementerSupportsAffectation();
+		Assert.assertTrue(pageSelectionUnite.estChargee());
+		pageSelectionUnite.selectionneAcademieParCode(PageSelectionUnite.ACADEMIE_TOULOUSE);
+		pageSelectionUnite.selectionneCategorieEtablissementParCode("1ORD");
+		pageSelectionUnite.selectionneDepartementParCode(PageSelectionUnite.DEPARTEMENT_HAUTE_GARONNE);
+		pageSelectionUnite.selectionneSecteur("prive");
+		pageSelectionUnite.selectionCommuneParCode("31541"); // SEILH
+		pageSelectionUnite.lancerRecherche();
+		if (pageSelectionUnite.premiereUsAUneUcm() == false) {
+			pageSelectionUnite.creerUcm();
+		}
+		else {
+			pageSelectionUnite.deploiePremiereUS();
+		}
+		// A repasser à false
+		if (pageSelectionUnite.ucmSelectionneAUnSupport() == true) {
+			PageCreationSupport creerSupport = pageSelectionUnite.creerSupport();
+			System.out.println("cccc");
+		}
+		else {
+			pageSelectionUnite.deploiePremierUCM();
+			pageSelectionUnite.selectionnePremierSupport();
+		}
+	}
+
+	@Test
+	public void testCreationAffectationAdministrative(@InitialPage final PageAuthentification pageAuthentification) {
+		pageAuthentification.setIdentifiant("cboquet");
+		pageAuthentification.setChampMotDePasse("logica");
+		PageAccueilPortailGestionnaire pageAccueilPortailGestionnaire = pageAuthentification.connexion();
+		Assert.assertTrue(pageAccueilPortailGestionnaire.estChargee());
+		selectionnerAgent(agent, pageAccueilPortailGestionnaire);
+		creerAffectationAdministrative(agent, pageAccueilPortailGestionnaire);
+		
+		System.out.println("Pause....");
+	}
+	
+
+	@Ignore
+	@Test
+	public void testCreationEchelon(@InitialPage final PageAuthentification pageAuthentification) {
+		Assert.assertTrue(pageAuthentification.estChargee());
+		pageAuthentification.setIdentifiant("cboquet");
+		pageAuthentification.setChampMotDePasse("logica");
+		PageAccueilPortailGestionnaire pageAccueilPortailGestionnaire = pageAuthentification.connexion();
+		Assert.assertTrue(pageAccueilPortailGestionnaire.estChargee());
+		
+		selectionnerAgent(agent, pageAccueilPortailGestionnaire);
+		ajouterEchelonAgent(agent, pageAccueilPortailGestionnaire);
+	}
+	
+	
+	
+	private void ajouterEchelonAgent(Agent agent, PageAccueilPortailGestionnaire pageAccueilPortailGestionnaire) {
+		PageListeEchelons pageListeEchelons = pageAccueilPortailGestionnaire.listeEchelons();
+		Assert.assertTrue(pageListeEchelons.estChargee());
+		pageListeEchelons.ajouterEchelon();
+		pageListeEchelons.selectionnePremierCorps();
+		pageListeEchelons.selectionnePremierGrade();
+		pageListeEchelons.setDateEntreeEchelon(DATE_ENTREE_FP);
+		pageListeEchelons.selectionnePremierEchelon();
+		pageListeEchelons.selectionnePremierModeAcces();
+		pageListeEchelons.valider();
+		System.out.println("Pause...");
+		
 	}
 	
 	
@@ -127,7 +205,7 @@ public class ScenarioInitiationContratAgentNonTitulaire {
 		Assert.assertEquals("Le message doit correspondre", "Aucune personne ayant le même nom n'a été trouvée, confirmez la création de l'agent.", messages.get(0));
 		PageSelectionCorpsGrade pageSelectionCorpsGrade = pageIdentificationAgentARecruter.creerDossier();
 		Assert.assertTrue(pageSelectionCorpsGrade.estChargee());
-		pageSelectionCorpsGrade.setDateEntree("01/09/2017");
+		pageSelectionCorpsGrade.setDateEntree(DATE_ENTREE_FP);
 		pageSelectionCorpsGrade.setTypePersonnel(PageSelectionCorpsGrade.PERSONNEL_PREMIER_DEGRE);
 		pageSelectionCorpsGrade.setCorps(PageSelectionCorpsGrade.CORPS_F00616);
 		pageSelectionCorpsGrade.setModeAccesCorps(PageSelectionCorpsGrade.CONCOURS_EXTERNE);
@@ -183,8 +261,9 @@ public class ScenarioInitiationContratAgentNonTitulaire {
 	
 	@Before
 	public void initialisation() {
-		//agent = createStaticAgent();
-		agent = createRandomAgent();
+		agent = createStaticAgent();
+		//agent = createRandomAgent();
+
 	}
 
 	private Agent createRandomAgent() {
@@ -193,12 +272,13 @@ public class ScenarioInitiationContratAgentNonTitulaire {
 		resultat.setNom("Dupond"+suffixe);
 		resultat.setPrenom("Martin");
 		resultat.setDateNaissance(DATE_NAISSANCE);
+		System.out.println("Agent aléatoire: "+resultat.getNom());
 		return resultat;
 	}
 	
 	private Agent createStaticAgent() {
 		Agent resultat = new Agent();
-		resultat.setNom("DUPONDATMLTOKSCR");
+		resultat.setNom("DUPONDORSBOVXRDN");
 		resultat.setDateNaissance(DATE_NAISSANCE);
 		resultat.setPrenom("Martin");
 		return resultat;
