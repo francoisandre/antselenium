@@ -10,7 +10,7 @@
     </extension>
     
      <extension qualifier="configuration">
-    	<property name="contextRoot">http://gp5-sir-web01.sirhen.prj.in.phm.education.gouv.fr</property>
+    	<property name="contextRoot">http://tr2-sir-webext01.sirhen.prj.in.phm.education.gouv.fr</property>
     </extension>
     
     <!-- <extension qualifier="webdriver">

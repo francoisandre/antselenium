@@ -6,9 +6,7 @@ import org.jboss.arquillian.graphene.page.Page;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import fr.gouv.education.sirhen.gin.gestiondescontratsdesnontitulaires.mapi.selenium.utils.SeleniumUtils;
-
-@Location("/mapi-pac-espace-gestionnaire/ihmr/accueil")
+@Location("/mapi-pac-portail-agent/ihmr/accueil")
 public class PageAuthentification {
 
 	@FindBy(id = "user")
@@ -21,7 +19,7 @@ public class PageAuthentification {
 	private WebElement boutonValider;
 
 	@Page
-	PageAccueilPortailGestionnaire pageAccueilPortailGestionnaire;
+	PageAccueilPortailAgent pageAccueilPortailAgent;
 
 	public PageAuthentification() {
 	}
@@ -34,12 +32,8 @@ public class PageAuthentification {
 		champMotDePasse.sendKeys(motDePasse);
 	}
 
-	public final PageAccueilPortailGestionnaire connexion() {
+	public final PageAccueilPortailAgent connexion() {
 		Graphene.guardHttp(boutonValider).click();
-		return pageAccueilPortailGestionnaire;
-	}
-
-	public boolean estChargee() {
-		return SeleniumUtils.isVisible(boutonValider);
+		return pageAccueilPortailAgent;
 	}
 }
